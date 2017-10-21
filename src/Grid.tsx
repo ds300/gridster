@@ -90,6 +90,7 @@ const tileBorderColor = '#d9d9d9'
 interface GridProps {
   tiles: TileState[]
   numColumns: number
+  onTileClick(row: number, column: number): void
 }
 
 const IDEAL_GRID_WIDTH = 480
@@ -131,7 +132,7 @@ const Tile = styled.div`
 
 export default class Grid extends React.Component<GridProps> {
   render() {
-    const { tiles, numColumns } = this.props
+    const { tiles, numColumns, onTileClick } = this.props
     const tileWidth = Math.round(IDEAL_GRID_WIDTH / numColumns)
 
     return (
@@ -154,6 +155,7 @@ export default class Grid extends React.Component<GridProps> {
                 left: column * tileWidth + 'px',
               }}
               tileState={tileState}
+              onClick={() => onTileClick(row, column)}
             />
           )
         })}
