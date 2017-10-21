@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 type TileState = 'Clear' | 'Filled' | 'Start' | 'End'
 
-export function randomTiles(rows: number, cols: number) {
+export function generateRandomGrid(rows: number, cols: number) {
   const result = new Array<TileState>(rows * cols)
   result.fill('Filled')
   const startRow = Math.floor(Math.random() * rows)

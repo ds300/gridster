@@ -1,7 +1,7 @@
 import * as React from 'react'
-import Grid, { randomTiles } from './Grid'
+import Grid, { generateRandomGrid } from './Grid'
 
-const tiles = randomTiles(9, 9)
+const tiles = generateRandomGrid(9, 9)
 
 class App extends React.Component {
   render() {
