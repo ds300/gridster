@@ -53,10 +53,10 @@ function calculateShortestPathFromStartToEnd(
     ]) {
       if (
         adjacentNode > -1 &&
-          adjacentNode < grid.length &&
+        adjacentNode < grid.length &&
         !encounteredNodes[adjacentNode]
       ) {
-          encounteredNodes[adjacentNode] = { previousNode: searchNode }
+        encounteredNodes[adjacentNode] = { previousNode: searchNode }
         if (grid[adjacentNode] === 'Clear') {
           queue.push(adjacentNode)
         } else if (grid[adjacentNode] === 'End') {
