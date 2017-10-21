@@ -1,13 +1,18 @@
 import * as React from 'react'
-import Grid, { generateRandomGrid } from './Grid'
+import { Provider } from 'react-redux'
 
-const tiles = generateRandomGrid(9, 9)
+import ConnectedGrid from './ConnectedGrid'
+
+import { makeStore } from './store'
 
 class App extends React.Component {
+  store = makeStore()
   render() {
     return (
       <div>
-        <Grid numColumns={9} tiles={tiles} />
+        <Provider store={this.store}>
+          <ConnectedGrid />
+        </Provider>
       </div>
     )
   }

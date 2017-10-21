@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-type TileState = 'Clear' | 'Filled' | 'Start' | 'End'
+export type TileState = 'Clear' | 'Filled' | 'Start' | 'End'
 
 export function generateRandomGrid(
   numRows: number,
@@ -87,10 +87,10 @@ const tileColors: Record<TileState, string> = {
 
 const tileBorderColor = '#d9d9d9'
 
-interface GridProps {
+export interface GridProps {
   tiles: TileState[]
   numColumns: number
-  onTileClick(row: number, column: number): void
+  onTileClick(tileIndex: number): void
 }
 
 const IDEAL_GRID_WIDTH = 480
@@ -155,7 +155,7 @@ export default class Grid extends React.Component<GridProps> {
                 left: column * tileWidth + 'px',
               }}
               tileState={tileState}
-              onClick={() => onTileClick(row, column)}
+              onClick={() => onTileClick(index)}
             />
           )
         })}
