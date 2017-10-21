@@ -3,14 +3,17 @@ import styled from 'styled-components'
 
 type TileState = 'Clear' | 'Filled' | 'Start' | 'End'
 
-export function generateRandomGrid(rows: number, cols: number) {
-  const result = new Array<TileState>(rows * cols)
+export function generateRandomGrid(
+  numRows: number,
+  numColumns: number,
+): TileState[] {
+  const result = new Array<TileState>(numRows * numColumns)
   result.fill('Filled')
-  const startRow = Math.floor(Math.random() * rows)
-  const endRow = Math.floor(Math.random() * rows)
+  const startRow = Math.floor(Math.random() * numRows)
+  const endRow = Math.floor(Math.random() * numRows)
 
-  result[startRow * cols] = 'Start'
-  result[endRow * cols + (cols - 1)] = 'End'
+  result[startRow * numColumns] = 'Start'
+  result[endRow * numColumns + (numColumns - 1)] = 'End'
 
   return result
 }
@@ -140,7 +143,7 @@ export default class Grid extends React.Component<GridProps> {
       >
         {tiles.map((tileState, index) => {
           const row = Math.floor(index / numColumns)
-          const col = index % numColumns
+          const column = index % numColumns
           return (
             <Tile
               key={index}
@@ -148,7 +151,7 @@ export default class Grid extends React.Component<GridProps> {
                 width: tileWidth + 'px',
                 height: tileWidth + 'px',
                 top: row * tileWidth + 'px',
-                left: col * tileWidth + 'px',
+                left: column * tileWidth + 'px',
               }}
               tileState={tileState}
             />
