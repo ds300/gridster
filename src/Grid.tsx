@@ -37,34 +37,35 @@ function shortestPath(grid: TileState[], numColumns: number): number[] | null {
     const nodeAbove = searchNode - numColumns
     const nodeBelow = searchNode + numColumns
     const nodeToTheRight =
-      (searchNode - 1) % numColumns === 0 ? -1 : searchNode + 1
+      (searchNode + 1) % numColumns === 0 ? -1 : searchNode + 1
     const nodeToTheLeft = searchNode % numColumns === 0 ? -1 : searchNode - 1
 
     // this loop will be unrolled pretty quickly at runtime, I imagine.
     for (const adjacentNode of [
+      // node above
       nodeAbove,
       nodeBelow,
       nodeToTheLeft,
       nodeToTheRight,
     ]) {
       if (
-        adjacentNode === previousNode ||
-        (adjacentNode > -1 &&
+        adjacentNode > -1 &&
           adjacentNode < grid.length &&
-          !encounteredNodes[adjacentNode])
+        !encounteredNodes[adjacentNode]
       ) {
-        if (grid[adjacentNode] === 'Clear') {
           encounteredNodes[adjacentNode] = { previousNode: searchNode }
-          queue.push(nodeAbove)
+        if (grid[adjacentNode] === 'Clear') {
+          queue.push(adjacentNode)
         } else if (grid[adjacentNode] === 'End') {
+          queue.push(adjacentNode)
           // finished, recover solution
-          const reversedSolution = []
+          const reversedSolution = [searchNode]
           for (
             let _previousNode = previousNode;
             _previousNode !== startNode;
             _previousNode = encounteredNodes[_previousNode].previousNode
           ) {
-            reversedSolution.push(previousNode)
+            reversedSolution.push(_previousNode)
           }
           return reversedSolution.reverse()
         }
