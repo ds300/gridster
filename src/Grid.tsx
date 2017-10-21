@@ -15,6 +15,63 @@ export function generateRandomGrid(rows: number, cols: number) {
   return result
 }
 
+function shortestPath(grid: TileState[], numColumns: number): number[] | null {
+  // Breadth-first search is absolutely fine for such small graphs.
+  // No need to optimize prematurely.
+  interface NodeRecord {
+    previousNode: number
+  }
+  const encounteredNodes = new Array<NodeRecord>(grid.length)
+  const startNode = grid.indexOf('Start')
+  encounteredNodes[startNode] = { previousNode: -1 }
+
+  const queue: number[] = [startNode]
+
+  while (queue.length > 0) {
+    const searchNode = queue.shift() as number
+    const previousNode = encounteredNodes[searchNode].previousNode
+
+    const nodeAbove = searchNode - numColumns
+    const nodeBelow = searchNode + numColumns
+    const nodeToTheRight =
+      (searchNode - 1) % numColumns === 0 ? -1 : searchNode + 1
+    const nodeToTheLeft = searchNode % numColumns === 0 ? -1 : searchNode - 1
+
+    // this loop will be unrolled pretty quickly at runtime, I imagine.
+    for (const adjacentNode of [
+      nodeAbove,
+      nodeBelow,
+      nodeToTheLeft,
+      nodeToTheRight,
+    ]) {
+      if (
+        adjacentNode === previousNode ||
+        (adjacentNode > -1 &&
+          adjacentNode < grid.length &&
+          !encounteredNodes[adjacentNode])
+      ) {
+        if (grid[adjacentNode] === 'Clear') {
+          encounteredNodes[adjacentNode] = { previousNode: searchNode }
+          queue.push(nodeAbove)
+        } else if (grid[adjacentNode] === 'End') {
+          // finished, recover solution
+          const reversedSolution = []
+          for (
+            let _previousNode = previousNode;
+            _previousNode !== startNode;
+            _previousNode = encounteredNodes[_previousNode].previousNode
+          ) {
+            reversedSolution.push(previousNode)
+          }
+          return reversedSolution.reverse()
+        }
+      }
+    }
+  }
+
+  return null
+}
+
 const isTileMutable = (tileState: TileState) =>
   tileState !== 'Start' && tileState !== 'End'
 
