@@ -4,26 +4,26 @@ import { createStore } from 'redux'
 import { connect as reactReduxConnect } from 'react-redux'
 
 export const TILE_CLICKED = 'TILE_CLICKED'
+export const GRID_GENERATED = 'GRID_GENERATED'
 
-type Action = {
-  type: typeof TILE_CLICKED
-  payload: { tileIndex: number }
-}
+type Action =
+  | {
+      type: typeof TILE_CLICKED
+      payload: { tileIndex: number }
+    }
+  | {
+      type: typeof GRID_GENERATED
+      payload: { grid: TileState[]; numColumns: number }
+    }
 
 interface State {
   tiles: TileState[]
   numColumns: number
-  numRows: number
-  desiredNumColumns: number
-  desiredNumRows: number
 }
 
 const initialState: State = {
   tiles: generateRandomGrid(10, 10),
   numColumns: 10,
-  numRows: 10,
-  desiredNumColumns: 10,
-  desiredNumRows: 10,
 }
 
 function toggleTile(tiles: TileState[], index: number) {
@@ -49,6 +49,11 @@ function reduce(state: State = initialState, action: Action) {
       return {
         ...state,
         tiles: toggleTile(state.tiles, action.payload.tileIndex),
+      }
+    case GRID_GENERATED:
+      return {
+        tiles: action.payload.grid,
+        numColumns: action.payload.numColumns,
       }
     default:
       return state

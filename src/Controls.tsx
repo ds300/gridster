@@ -94,10 +94,18 @@ const XWrapper = styled.div`
   align-self: flex-end;
 `
 
-export default class Controls extends React.Component {
+export interface ControlsProps {
+  onGenerate(rows: number, colums: number): void
+}
+
+export default class Controls extends React.Component<ControlsProps> {
   state = {
     rows: 10,
     columns: 10,
+  }
+
+  onGenerate = () => {
+    this.props.onGenerate(this.state.rows, this.state.columns)
   }
 
   render() {
@@ -114,7 +122,7 @@ export default class Controls extends React.Component {
           value={this.state.columns}
           onChange={columns => this.setState({ columns })}
         />
-        <Button>Generate</Button>
+        <Button onClick={this.onGenerate}>Generate</Button>
       </ControlsWrapper>
     )
   }

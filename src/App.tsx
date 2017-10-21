@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import styled from 'styled-components'
 
 import ConnectedGrid from './ConnectedGrid'
-import Controls from './Controls'
+import ConnectedControls from './ConnectedControls'
 
 import { makeStore } from './store'
 
@@ -27,7 +27,7 @@ class App extends React.Component {
           <Header>
             <img src={logo} alt="Gridster" width="225px" />
           </Header>
-          <Controls />
+          <ConnectedControls />
           <ConnectedGrid />
         </Page>
       </Provider>
