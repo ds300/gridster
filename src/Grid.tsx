@@ -109,6 +109,7 @@ const GridWrapper = styled.div`
 
 interface TileProps {
   tileState: TileState
+  isOnShortestPath: boolean
 }
 
 const Tile = styled.div`
@@ -117,9 +118,9 @@ const Tile = styled.div`
   border-bottom-width: 1px;
   border-right-width: 1px;
   box-sizing: border-box;
-  ${({ tileState }: TileProps) =>
+  ${({ tileState, isOnShortestPath }: TileProps) =>
     `
-    background-color: ${tileColors[tileState]};
+    background-color: ${isOnShortestPath ? '#f5a623' : tileColors[tileState]};
 
     ${isTileMutable(tileState) &&
       `
@@ -138,6 +139,8 @@ export default class Grid extends React.Component<GridProps> {
   render() {
     const { tiles, numColumns, onTileClick } = this.props
     const tileWidth = Math.round(IDEAL_GRID_WIDTH / numColumns)
+
+    const shortestPath = calculateShortestPathFromStartToEnd(tiles, numColumns)
 
     return (
       <GridWrapper
@@ -159,6 +162,9 @@ export default class Grid extends React.Component<GridProps> {
                 left: column * tileWidth + 'px',
               }}
               tileState={tileState}
+              isOnShortestPath={
+                (shortestPath && shortestPath.includes(index)) || false
+              }
               onClick={() => onTileClick(index)}
             />
           )
