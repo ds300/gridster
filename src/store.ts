@@ -64,6 +64,8 @@ export function makeStore() {
   return createStore(reduce)
 }
 
+// define own connect function to make app-speicific state and dispatch types
+// available automatically
 export function connect<
   StateProps,
   DispatchProps,

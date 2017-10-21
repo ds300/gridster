@@ -45,23 +45,25 @@ function calculateShortestPathFromStartToEnd(
 
     // this loop will be unrolled pretty quickly at runtime, I imagine.
     for (const adjacentNode of [
-      // node above
       nodeAbove,
       nodeBelow,
       nodeToTheLeft,
       nodeToTheRight,
     ]) {
+      // only explore nodes that exist and have not been encountered before,
+      // to avoid backtracking
       if (
         adjacentNode > -1 &&
         adjacentNode < grid.length &&
         !encounteredNodes[adjacentNode]
       ) {
         encounteredNodes[adjacentNode] = { previousNode: searchNode }
+
         if (grid[adjacentNode] === 'Clear') {
+          // only explore unencountered nodes which are also clear
           queue.push(adjacentNode)
         } else if (grid[adjacentNode] === 'End') {
-          queue.push(adjacentNode)
-          // finished, recover solution
+          // finished! recover solution
           const reversedSolution = [searchNode]
           for (
             let _previousNode = previousNode;
@@ -112,6 +114,7 @@ interface TileProps {
   isOnShortestPath: boolean
 }
 
+// absolutely position tiles to keep reflows dirt cheap
 const Tile = styled.div`
   position: absolute;
   border: 0px solid ${tileBorderColor};

@@ -30,9 +30,11 @@ class IntegerInput extends React.Component<{
   label: string
   onChange(num: number): void
 }> {
+  // Allow user to type any old nonsense, but sanitze afterward
+  // This provides fairly nice UX. See, e.g. Transferwise
   onUserInput = (ev: React.SyntheticEvent<HTMLInputElement>) => {
     const target = ev.target as HTMLInputElement
-    const newValue = target.value as string
+    const newValue = target.value
     const sanitized = Math.max(
       Math.min(Number((newValue.match(/\d+/) || ['0'])[0]), 20),
       3,
@@ -51,6 +53,11 @@ class IntegerInput extends React.Component<{
           name={label}
           defaultValue={String(value)}
           onBlur={this.onUserInput}
+          onKeyDown={ev => {
+            if (ev.keyCode === 13) {
+              ;(ev.target as HTMLInputElement).blur()
+            }
+          }}
         />
       </InputWrapper>
     )
