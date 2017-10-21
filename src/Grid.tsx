@@ -18,7 +18,10 @@ export function generateRandomGrid(
   return result
 }
 
-function shortestPath(grid: TileState[], numColumns: number): number[] | null {
+function calculateShortestPathFromStartToEnd(
+  grid: TileState[],
+  numColumns: number,
+): number[] | null {
   // Breadth-first search is absolutely fine for such small graphs.
   // No need to optimize prematurely.
   interface NodeRecord {
