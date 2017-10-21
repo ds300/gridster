@@ -5,15 +5,18 @@ import ConnectedGrid from './ConnectedGrid'
 
 import { makeStore } from './store'
 
+const logo = require('./Gridster-Logo.png')
+
 class App extends React.Component {
   store = makeStore()
   render() {
     return (
-      <div>
-        <Provider store={this.store}>
+      <Provider store={this.store}>
+        <div>
+          <img src={logo} alt="Gridster" />
           <ConnectedGrid />
-        </Provider>
-      </div>
+        </div>
+      </Provider>
     )
   }
 }
